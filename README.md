@@ -7,4 +7,4 @@ We revisit the multi-task collaborative learning in MSA. Specifically, we incorp
 python train.py
 
 ## Overall framework
-![MTLF](/Image/Overal_framework.jpg)
+![MTLF](/Image/overall_framework.jpg)
