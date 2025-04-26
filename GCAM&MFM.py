@@ -48,43 +48,6 @@ class CrossAttention(nn.Module):
         else:
             return output
 
-# class SentenceLevelGlobalAttention(nn.Module):
-#     def __init__(self, text_dim=768, dropout=0.5):
-#         super(SentenceLevelGlobalAttention, self).__init__()
-#         self.attention = nn.MultiheadAttention(embed_dim=text_dim, num_heads=8, dropout=dropout)
-#
-#     def forward(self, text_embedding):
-#         # 确保text_embedding的形状是(seq_len, batch_size, text_dim)
-#         text_embedding = text_embedding.transpose(0, 1)  # 转换到正确的形状
-#
-#         # 提取CLS标记并调整其形状
-#         cls_token = text_embedding[0, :, :].unsqueeze(0)  # (1, batch_size, text_dim)
-#         # last_token = text_embedding[-1, :, :].unsqueeze(0)  # (1, batch_size, text_dim)
-#
-#         # 注意力机制
-#         global_context, _ = self.attention(cls_token, text_embedding, text_embedding)
-#
-#         # 返回结果时再转换回(batch_size, text_dim)
-#         global_context = global_context.squeeze(0)  # (batch_size, text_dim)
-#
-#         return global_context
-
-# class SentenceLevelGlobalAttention(nn.Module):
-#     def __init__(self, text_dim=768, dropout=0.5):
-#         super(SentenceLevelGlobalAttention, self).__init__()
-#         self.attention = nn.MultiheadAttention(embed_dim=text_dim, num_heads=8, dropout=dropout)
-#         self.norm = RMSNorm(text_dim)
-#
-#     def forward(self, text_embedding):
-#         # 对于xlnet来说，此时text_embedding 的形状是 (seq_len, batch_size, text_dim)
-#
-#         query = torch.mean(text_embedding, dim=0, keepdim=True)
-#
-#         global_context, _ = self.attention(query, text_embedding, text_embedding)
-#
-#         global_context = self.norm(global_context)  # (1, batch_size, text_dim)
-#
-#         return global_context
 class SentenceLevelGlobalAttention(nn.Module):
     def __init__(self, text_dim=768, dropout=0.5):
         super(SentenceLevelGlobalAttention, self).__init__()
@@ -107,26 +70,6 @@ class SentenceLevelGlobalAttention(nn.Module):
         global_context1 = self.norm1(global_context1 + text_embedding)  # (1, batch_size, text_dim)
 
         return global_context1
-# class SentenceLevelGlobalAttention(nn.Module):
-#     def __init__(self, text_dim=768, dropout=0.5):
-#         super(SentenceLevelGlobalAttention, self).__init__()
-#         self.attention = nn.MultiheadAttention(embed_dim=text_dim, num_heads=8, dropout=dropout)
-#         self.norm = RMSNorm(text_dim)
-#         # 引入可学习的权重向量
-#         self.weights = nn.Parameter(torch.ones(text_dim))
-#
-#     def forward(self, text_embedding):
-#         # 对于xlnet来说，此时text_embedding 的形状是 (seq_len, batch_size, text_dim)
-#
-#         # 计算加权平均，得到查询向量
-#         weighted_text_embedding = text_embedding * self.weights.unsqueeze(0).unsqueeze(1)
-#         query = torch.sum(weighted_text_embedding, dim=0, keepdim=True) / torch.sum(self.weights)
-#
-#         global_context, _ = self.attention(query, text_embedding, text_embedding)
-#
-#         global_context = self.norm(global_context + text_embedding)  # (1, batch_size, text_dim)
-#
-#         return global_context
 
 
 class GCAA(nn.Module):
