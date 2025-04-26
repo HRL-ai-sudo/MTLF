@@ -7,7 +7,7 @@ We revisit the multi-task collaborative learning in MSA. Specifically, we incorp
 python3.8    
 torch-1.12.0+cu116
 
-python train.py
+run train.py
 
 ## Overall framework
 ![MTLF](/Image/overall_framework.jpg)
